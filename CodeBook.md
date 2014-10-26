@@ -121,7 +121,7 @@ Notice that in the process we have changed the name of the variables adding *"_a
 Finally we have our final data set *"tidy_data"* ready, so we can clean the the rest of the objects and write it into a txt file :
 
     rm(list=subset(ls(),ls()!="tidy_data"))
-    write.table(tidy_data,"tidy_data.txt")
+    write.table(tidy_data,"tidy_data.txt",row.name=FALSE)
 
 ***
 

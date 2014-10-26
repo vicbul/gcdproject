@@ -58,4 +58,4 @@ for(name in names(all_activities[,3:ncol(all_activities)])) {
 
 #FInally we clean the environment keeping the tidy data and writting it into a txt file
 rm(list=subset(ls(),ls()!="tidy_data"))
-write.table(tidy_data,"tidy_data.txt")
+write.table(tidy_data,"tidy_data.txt",row.name=FALSE)
