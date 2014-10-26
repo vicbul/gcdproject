@@ -55,7 +55,7 @@ The source data set is divided in two subgroups, *test* and *train*, each one co
 
 - CodeBook.md : Step by step detailed explanation of the data cleaning process and its final output (list of variables and their descriptions)
 
-- run_analysis.R : R script that takes raw data as an imput and generates a tidy data set as an output.
+- run_analysis.R : R script that takes raw data as an input and generates a tidy data set as an output.
 
 - tidy_data.txt : Final tidy data set stored iin a text file, with the means an standard deviations of each measurement present in raw data, ordered by activity and subject.
 

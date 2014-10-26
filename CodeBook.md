@@ -11,7 +11,7 @@ Some additional libraries need to be loaded in order to run *"run_analysis.R"* s
 
 **1. Merge the training and the test sets to create one data set:**
 
-First of all the relevant data need to be read and stored as data frames on R environment. Assuming the zip file have been already downloaded and decompressed on the working directory, the files that need to be read are "*X\_test.txt*" and "*X\_train.txt*" both containig the measurements taken for all subjets while performing the activities estudied.   
+First of all the relevant data need to be read and stored as data frames on R environment. Assuming the zip file have been already downloaded and decompressed on the working directory, the files that need to be read are "*X\_test.txt*" and "*X\_train.txt*" both containing the measurements taken for all subjects while performing the activities studied.   
 
 
     x_test <- read.table("UCI HAR Dataset/test/X_test.txt")
@@ -22,14 +22,14 @@ Merging the data frames by rows (*X\_train* at the bottom of *X\_test*) using *r
 
     x_all <- rbind(x_test,x_train)
 
-Now the two data frames are merged into one. However columns names are missing. THe names are stored on a separate file named "*features.txt*", one variable name per line. Lets store in a variable only the variable names to use them as names for our dataframe:
+Now the two data frames are merged into one. However columns names are missing. THe names are stored on a separate file named "*features.txt*", one variable name per line. Lets store in a variable only the variable names to use them as names for our data frame:
 
     features <- read.table("UCI HAR Dataset/features.txt")[,2]
     names(x_all) <- features
 
 **2. Extract only the measurements on the mean and standard deviation for each measurement.**
 
-Here we are requested to take only the mean and standard deviation of all the measurement taken from the sensors. Accordinting to *"features_info.txt"* instructions, sensor signal variable names are as follows:
+Here we are requested to take only the mean and standard deviation of all the measurement taken from the sensors. According to *"features_info.txt"* instructions, sensor signal variable names are as follows:
 
 - tBodyAcc-XYZ*
 - tGravityAcc-XYZ*
@@ -62,7 +62,7 @@ As expected the new data frame has 66 columns.
 
 **3. Use descriptive activity names to name the activities in the data set**
 
-Again, the data frame is missing information about what activity correspond to each observation or row. According to the information provided on "*README.txt*" there are six activities performed by the subjects, codified from 1 to 6 as specified on "*activity_labels.txt*":
+Again, the data frame is missing information about what activity corresponds to each observation or row. According to the information provided on "*README.txt*" there are six activities performed by the subjects, codified from 1 to 6 as specified on "*activity_labels.txt*":
 
 1. WALKING
 2. WALKING\_UPSTAIRS
@@ -79,7 +79,7 @@ Unfortunately those labels are in another file that we have to read to add it to
     names(act_all) <- "activity"
     all_activities <- cbind(act_all,x_all_mean_std)
 
-Now in order to replace activity number with descriptive labels we turn "activity" column class into a factor, and then we turn factor levels into new labels according to the clasification in *"activity_labels.txt"*.
+Now in order to replace activity number with descriptive labels we turn "activity" column class into a factor, and then we turn factor levels into new labels according to the classification in *"activity_labels.txt"*.
 
     all_activities$activity <- as.factor(all_activities$activity)
     act_lbl <- read.table("UCI HAR Dataset/activity_labels.txt",col.names=c("factor","name"))
@@ -87,7 +87,7 @@ Now in order to replace activity number with descriptive labels we turn "activit
 
 **4. Appropriately label the data set with descriptive variable names.**
 
-Using the names provided in *"features.txt"* as variable names, as we already did, seems coherent and descriptive. However it is convenient to remove especial characteres like "-" and "()" which could create problems later on subsetting the data using some functions like *sqldf()*. 
+Using the names provided in *"features.txt"* as variable names, as we already did, seems coherent and descriptive. However it is convenient to remove especial characters like "-" and "()" which could create problems later on subsetting the data using some functions like *sqldf()*. 
 
     names(all_activities) <- gsub("-","_",names(all_activities))
     names(all_activities) <- gsub("\\(|\\)","",names(all_activities))
