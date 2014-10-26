@@ -5,31 +5,31 @@ output: html_document
 
 This is a code book document that describes the variables, the data, and any transformations or work performed to clean up the data provided for this project on the Coursera project section of Getting and Cleaning data course (getdata-008). This document follows the guidelines provided there, dividing the process, and hence the code, in five steps until reaching the totality of the script requested (*run_analysis.R*):
 
-**1. Merge the training and the test sets to create one data set:**
-
-Some additional libraries are needed to run the script:
+Some additional libraries need to be loaded in order to run *"run_analysis.R"* script:
 
     library(sqldf)
 
-First of all the relevant data need to be read and stored as data frames on R environment. Assuming the zip file have been already downloaded and decompressed on the working directory, the files that need to be read are "*X\_test.txt*" and "*X\_train.txt*" both containig the measurements taken to all subjets while performing the activities estudied.   
+**1. Merge the training and the test sets to create one data set:**
+
+First of all the relevant data need to be read and stored as data frames on R environment. Assuming the zip file have been already downloaded and decompressed on the working directory, the files that need to be read are "*X\_test.txt*" and "*X\_train.txt*" both containig the measurements taken for all subjets while performing the activities estudied.   
 
 
     x_test <- read.table("UCI HAR Dataset/test/X_test.txt")
     x_train <- read.table("UCI HAR Dataset/train/X_train.txt")
 
 
-Merging the data frames by rows (*X\_train* at the bottom of *X\_test*) using rbind().
+Merging the data frames by rows (*X\_train* at the bottom of *X\_test*) using *rbind()*.
 
     x_all <- rbind(x_test,x_train)
 
-Now the two data frames are merged into one. However variables' names are missing. THe names are stored on a separate file named "*features.txt*", one variable name per line. Lets store in a variable only the variable names to use them as names for our dataframe:
+Now the two data frames are merged into one. However columns names are missing. THe names are stored on a separate file named "*features.txt*", one variable name per line. Lets store in a variable only the variable names to use them as names for our dataframe:
 
     features <- read.table("UCI HAR Dataset/features.txt")[,2]
     names(x_all) <- features
 
 **2. Extract only the measurements on the mean and standard deviation for each measurement.**
 
-Here we are requested to take only the mean and standard deviation of all the measurement taken from the sensors. Accordinting to *"features_info.txt"* instructions, sensor signal variables are the following:
+Here we are requested to take only the mean and standard deviation of all the measurement taken from the sensors. Accordinting to *"features_info.txt"* instructions, sensor signal variable names are as follows:
 
 - tBodyAcc-XYZ*
 - tGravityAcc-XYZ*
@@ -49,9 +49,9 @@ Here we are requested to take only the mean and standard deviation of all the me
 - fBodyGyroMag*
 - fBodyGyroJerkMag*
 
-\**-XYZ' is used to denote 3-axial signals in the X, Y and Z directions*
+*-XYZ' is used to denote 3-axial signals in the X, Y and Z directions*
 
-Mean and standard deviation were calculated for all 33 previous variables (containing "*mean()*"" and "*std()*" on their variable names). That makes a total of 66 measurements. So we are seeking for a data frame containing 66 columns. We can use this to check the correct output.
+Mean and standard deviation were calculated for all 33 previous variables (containing "*mean()*"" and "*std()*" on their variable names). That makes a total of 66 measurements. So we are seeking for a data frame containing 66 columns. We can use this as a reference to check if the output is correct.
 
 Now is time to extract the variables requested creating a regex rule for finding patterns on variable names corresponding to those containing "*mean()*" and "*std()*" on their names.
 
@@ -62,7 +62,7 @@ As expected the new data frame has 66 columns.
 
 **3. Use descriptive activity names to name the activities in the data set**
 
-Again, the data frame is missing information about what activiti correspond to each observation or row. According to the information provided on "*README.txt*" there are six activities performed by the subjects, codified from 1 to 6 as specified on "*activity_labels.txt*":
+Again, the data frame is missing information about what activity correspond to each observation or row. According to the information provided on "*README.txt*" there are six activities performed by the subjects, codified from 1 to 6 as specified on "*activity_labels.txt*":
 
 1. WALKING
 2. WALKING\_UPSTAIRS
@@ -79,7 +79,7 @@ Unfortunately those labels are in another file that we have to read to add it to
     names(act_all) <- "activity"
     all_activities <- cbind(act_all,x_all_mean_std)
 
-Now in orde to replace activity number with descriptive labels we turn "activity" column class into a factor, and then we turn factor levels into new labels according to the clasification in *"activity_labels.txt"*.
+Now in order to replace activity number with descriptive labels we turn "activity" column class into a factor, and then we turn factor levels into new labels according to the clasification in *"activity_labels.txt"*.
 
     all_activities$activity <- as.factor(all_activities$activity)
     act_lbl <- read.table("UCI HAR Dataset/activity_labels.txt",col.names=c("factor","name"))
@@ -96,7 +96,7 @@ Now variable names look something like *"tBodyAcc_mean_X"*.
 
 **5. From the data set in step 4, create a second, independent tidy data set with the average of each variable for each activity and each subject.**
 
-Now we need to add subject ids to the measurements of the activities we just stored in our new data frame. Again those ids are located in independent files named *"subject_test.txt"* and *"subject_train.txt"*, each line corresponding to the subject id for the set of measurement in that same position. So once again we have to read, merge and then add it into our data frame as a new column named *"subject"*:
+Again *"subject"* ids are located in independent files named *"subject_test.txt"* and *"subject_train.txt"*, with each line corresponding to the *"subject"* from which the set of measurement in that same position were taken. So once again we have to read, merge and then add it to our data frame as a new column named *"subject"*:
 
     test_sbj <- read.table("UCI HAR Dataset/test/subject_test.txt")
     train_sbj <- read.table("UCI HAR Dataset/train/subject_train.txt")
@@ -104,21 +104,21 @@ Now we need to add subject ids to the measurements of the activities we just sto
     names(subject) <- 'subject'
     all_activities <- cbind(subject,all_activities)
 
-Now the final step is to create an independent new data set with the average of each variable grouped by activity and subject. By this I understand that each subject will have an average of each variable per kind of activity, hence, having 30 subjects in total and 6 kind of activities we should get 30x6 rows in the new data set.
+Now the final step is to create an independent new data set with the average of each variable grouped by activity and subject. By this we understand that each subject will have an average of each variable per kind of activity, hence, having 30 subjects in total and 6 kind of activities we should get 30x6 rows in the new data set.
 
-In our current data set we have 68 columns. The two firsts are *"subject"* and *"activity"*, which will be used for summarizing and need no average calculation. Thus we can start extracting those two columns into a new data frame grouped by activity and then subject (notice that here we are using sqldf() to be able to select using SQL): 
+In our current data set we have 68 columns. The two firsts are *"subject"* and *"activity"*, which will be used for summarizing, and need no average calculation. Thus we can start extracting those two columns into a new data frame grouped by activity and then subject (notice that here we are using *"sqldf()"* to be able to select using SQL language): 
 
     tidy_data <- sqldf("select activity,subject from all_activities group by activity, subject")
 
-At this point we only need to add the rest of the variables. We can achieve this using a for loop iterating the rest of the columns (3-68), grouping by activity and subject, summarizing by average and finally merging with the new data frame:
+At this point we only need to add the rest of the variables to the new *"tidy_data"* data frame. We can achieve this using a for loop iterating the rest of the columns (3-68), grouping by activity and subject, summarizing by average, and finally merging it with the new data frame:
 
     for(name in names(all_activities[,3:ncol(all_activities)])) {
         tidy_data <- cbind(tidy_data,fn$sqldf("select avg($name) as $name_avg from all_activities group by activity,subject"))
     }
 
-Notice that in the process we have changed the name of the variables adding *"_avg"* at the end to indicate that it is an average of the mean/standar deviation of the measurements of each subject.
+Notice that in the process we have changed the name of the variables adding *"_avg"* at the end of each one, to indicate that it is an average of the mean/standar deviation of the measurements of each subject.
 
-Finally we have our final data set *tidy_data* ready, so we can clean the the rest of the objects and write it into a txt file :
+Finally we have our final data set *"tidy_data"* ready, so we can clean the the rest of the objects and write it into a txt file :
 
     rm(list=subset(ls(),ls()!="tidy_data"))
     write.table(tidy_data,"tidy_data.txt")

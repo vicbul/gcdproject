@@ -9,9 +9,9 @@ Victor Bulnes Peñalver
 victorbulnes.webs.com
 
 ***
-"tidy\_dataset.txt" is the product of processing the raw data provided for this assignment. Such raw data was collected from the "Human Activity Using Smartphones Dataset", created through a series of experiments carried out with a group of 30 voluteers (subjects) performing six different acivities (WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING) wering a smarthphone on the waist, and using its sensors to capture the data.
+"tidy\_dataset.txt" is the product of processing the raw data provided for this assignment. Such raw data was collected from the "Human Activity Using Smartphones Dataset", created through a series of experiments carried out with a group of 30 voluteers (subjects) performing six different acivities (WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING) while wearing a smarthphone on the waist, and using its sensors to capture the data.
 
-This data process is embded within the R script *"run_analysis.R"*, which contains a series of instructions for manipulating and transforming raw data, in order to get a tidy data set of the means and standard deviations of all the measurements within it, ordered by activity and subject. For a step by step detailed guide on how that process is conducted, as well as getting list of output variables and their descriptions, please refer to the *"CodeBook.md"* file on this repository.
+This data process is embded within the R script *"run_analysis.R"*, which contains a series of instructions for manipulating and transforming raw data, in order to get a tidy data set of the means and standard deviations of all the measurements within it, ordered by activity and subject. For a step by step detailed guide on how that process is conducted, as well as getting a list of output variables and their descriptions, please refer to the *"CodeBook.md"* file on this repository.
 
 To know more about the raw data please visit the following link:
 
@@ -20,6 +20,10 @@ http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartpho
 ***
 
 **List of Raw data files required for the analysis:**
+
+Raw data can be downloaded here:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
 The source data set is divided in two subgroups, *test* and *train*, each one corresponding to a different set of subjects, and stored in different folders. here there is a list of files included in the data set that are needed to complete this assignment:
 
